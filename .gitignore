@@ -1,0 +1,10 @@
+node_modules/
+data/*.json
+.env
+.env.local
+.DS_Store
+npm-debug.log
+dist/
+.venv/
+coverage/
+.arena/

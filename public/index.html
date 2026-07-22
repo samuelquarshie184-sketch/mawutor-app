@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f1e3a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mawutor Dezor">
+<meta name="description" content="Mawutor Dezor Enterprise - Mobile Money Bookkeeping for Ho Dome, Volta Region - Offline PWA with MoMo numbers">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- Offline Banner -->
+<div id="offlineBanner" class="offline-banner hidden">
+  <span>📴 Offline Mode — You can still add transactions, they will sync when internet returns. MoMo numbers saved locally.</span>
+  <small id="offlineQueueCount">0 queued</small>
+</div>
+
+<!-- Install Banner -->
+<div id="installBanner" class="install-banner hidden">
+  <div class="install-left">
+    <img src="/icons/icon-96.png" alt="logo" width="36" height="36" style="border-radius:8px">
+    <div>
+      <b>Install Mawutor App</b>
+      <small>Works offline + Add to Home Screen</small>
+    </div>
+  </div>
+  <div class="install-actions">
+    <button id="installBtn" class="btn yellow sm">Install</button>
+    <button id="dismissInstall" class="btn ghost sm">✕</button>
+  </div>
+</div>
+
+<!-- Auth View -->
+<div id="authView" class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="logo-circle">M</div>
+      <h1>Mawutor Dezor Enterprise</h1>
+      <p class="sub">Ho Dome, Volta Region, Ghana — Mobile Money Ledger</p>
+      <p class="sub" style="font-size:11px;color:var(--green);font-weight:700;margin-top:4px">✓ MoMo Numbers • ✓ Offline PWA • ✓ Installable • ✓ Daily Closing</p>
+      <p class="sub" style="font-size:10px;color:var(--muted);margin-top:2px">Developed by <b style="color:var(--navy)">Samquarsh</b> • <a href="tel:0558103988" style="color:var(--navy)">0558103988</a></p>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-auth-tab="login">Login</button>
+      <button class="auth-tab" data-auth-tab="register">Register</button>
+      <button class="auth-tab" data-auth-tab="forgot">Reset</button>
+    </div>
+
+    <!-- Login -->
+    <form id="loginForm" class="auth-form active">
+      <div class="field">
+        <label>Email or Phone</label>
+        <input type="text" id="loginId" inputmode="email" autocomplete="username" placeholder="e.g. kwame@example.com or 055..." required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPwd" autocomplete="current-password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn primary full">Sign In</button>
+      <p class="hint">First user to register becomes Admin automatically. Works offline after first login.</p>
+    </form>
+
+    <!-- Register -->
+    <form id="registerForm" class="auth-form">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="regName" autocomplete="name" placeholder="Mawutor Dezor" required>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="regEmail" inputmode="email" autocomplete="email" placeholder="you@email.com">
+        </div>
+        <div class="field">
+          <label>Phone (Ghana)</label>
+          <input type="tel" id="regPhone" inputmode="tel" autocomplete="tel" placeholder="0244...">
+        </div>
+      </div>
+      <div class="field">
+        <label>Password (min 6)</label>
+        <input type="password" id="regPwd" autocomplete="new-password" placeholder="Create password" required>
+      </div>
+      <div class="field">
+        <label>Role</label>
+        <select id="regRole">
+          <option value="attendant">Attendant</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn primary full">Create Account</button>
+    </form>
+
+    <!-- Forgot -->
+    <form id="forgotForm" class="auth-form">
+      <div class="field">
+        <label>Email or Phone</label>
+        <input type="text" id="forgotId" placeholder="Registered email or phone" required>
+      </div>
+      <button type="submit" class="btn primary full">Generate Reset Token</button>
+      <div id="forgotResult" class="alert hidden"></div>
+    </form>
+
+    <!-- Reset -->
+    <form id="resetForm" class="auth-form">
+      <div class="field">
+        <label>Reset Token</label>
+        <input type="text" id="resetToken" placeholder="Paste token from above" required>
+      </div>
+      <div class="field">
+        <label>New Password</label>
+        <input type="password" id="resetPwd" placeholder="New password" required>
+      </div>
+      <button type="submit" class="btn yellow full">Reset Password</button>
+    </form>
+
+    <div id="authError" class="error-box hidden"></div>
+
+    <!-- Offline info in auth -->
+    <div class="offline-info">
+      <small>📴 Offline ready: After first login, app shell cached. Add transactions offline — syncs when online. Install: Android Chrome menu → Add to Home Screen. iPhone Safari → Share → Add to Home Screen.</small>
+    </div>
+  </div>
+  <div class="auth-bg">
+    <div class="bg-card mtn"><span>MTN</span><b id="bgMtn">GHS 0.00</b></div>
+    <div class="bg-card telecel"><span>Telecel</span><b id="bgTelecel">GHS 0.00</b></div>
+    <div class="bg-card total"><span>TOTAL FLOAT • Offline PWA</span><b>Installable • Works Offline</b></div>
+  </div>
+</div>
+
+<!-- Dashboard View -->
+<div id="dashboardView" class="dashboard hidden">
+  <header class="topbar">
+    <div class="top-left">
+      <div class="logo-circle small">M</div>
+      <div>
+        <h2>Mawutor Dezor Enterprise</h2>
+        <span>Ho Dome • <span id="liveDot" class="live-dot"></span> <span id="connStatus">Live</span> • <span id="offlineStatus">📶 Online</span></span>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="user-pill">
+        <span id="userName">User</span>
+        <small id="userRole">attendant</small>
+      </div>
+      <button id="installMenuBtn" class="btn yellow sm hidden" title="Install App">📲</button>
+      <button id="logoutBtn" class="btn ghost sm">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tab active" data-tab="mtn"><span class="dot yellow"></span> MTN</button>
+    <button class="tab" data-tab="telecel"><span class="dot red"></span> Telecel</button>
+    <button class="tab" data-tab="statements">📄 Statements</button>
+    <button class="tab" data-tab="trial">⚖️ Trial Balance</button>
+  </nav>
+
+  <main class="content">
+    <!-- MTN Tab -->
+    <section id="tab-mtn" class="tab-pane active">
+      <div class="pane-header">
+        <h3><span class="badge mtn">MTN</span> MoMo Ledger <small style="font-weight:400;color:var(--muted)" id="mtnCountLabel"></small> <small id="mtnOfflineBadge" class="badge" style="background:#fff3cd;color:#856404;display:none">Offline cache</small> <small id="mtnClosedBadge" class="badge" style="background:#f8d7da;color:#721c24;display:none">🔒 Closed Day</small></h3>
+        <div class="pane-actions">
+          <div class="search-wrap">
+            <input type="text" class="search" id="searchMTN" inputmode="search" placeholder="Search client or MoMo #...">
+          </div>
+          <input type="date" id="filterStartMTN" class="date">
+          <input type="date" id="filterEndMTN" class="date">
+          <button class="btn yellow sm" id="addMTNBtn">+ Add</button>
+          <button class="btn ghost sm" id="closeDayMTN" title="Admin only - Close day to lock transactions">🔒 Close Day</button>
+          <button class="btn ghost sm" id="exportCsvMTN">CSV</button>
+          <button class="btn ghost sm" id="exportPdfMTN">PDF</button>
+        </div>
+      </div>
+      <div id="closedDaysInfoMTN" class="alert hidden" style="margin-bottom:10px;background:#f8d7da;border-color:#f5c6cb;color:#721c24;font-size:12px"></div>
+      <div class="cards4" id="cardsMTN"></div>
+      <div class="table-wrap desktop-only">
+        <table class="table">
+          <thead><tr><th>Date</th><th>Client</th><th>MoMo Number</th><th>Capital</th><th>Deposit</th><th>Withdrawal</th><th>Balance</th><th>Branch</th><th>Actions</th></tr></thead>
+          <tbody id="tbodyMTN"><tr><td colspan="9" class="center muted">Loading...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="mobileMTN" class="mobile-cards"></div>
+    </section>
+
+    <!-- Telecel Tab -->
+    <section id="tab-telecel" class="tab-pane">
+      <div class="pane-header">
+        <h3><span class="badge telecel">Telecel</span> Cash Ledger <small style="font-weight:400;color:var(--muted)" id="telecelCountLabel"></small> <small id="telecelOfflineBadge" class="badge" style="background:#fff3cd;color:#856404;display:none">Offline cache</small> <small id="telecelClosedBadge" class="badge" style="background:#f8d7da;color:#721c24;display:none">🔒 Closed Day</small></h3>
+        <div class="pane-actions">
+          <div class="search-wrap">
+            <input type="text" class="search" id="searchTelecel" inputmode="search" placeholder="Search client or MoMo #...">
+          </div>
+          <input type="date" id="filterStartTelecel" class="date">
+          <input type="date" id="filterEndTelecel" class="date">
+          <button class="btn red sm" id="addTelecelBtn">+ Add</button>
+          <button class="btn ghost sm" id="closeDayTelecel" title="Admin only - Close day">🔒 Close Day</button>
+          <button class="btn ghost sm" id="exportCsvTelecel">CSV</button>
+          <button class="btn ghost sm" id="exportPdfTelecel">PDF</button>
+        </div>
+      </div>
+      <div id="closedDaysInfoTelecel" class="alert hidden" style="margin-bottom:10px;background:#f8d7da;border-color:#f5c6cb;color:#721c24;font-size:12px"></div>
+      <div class="cards4" id="cardsTelecel"></div>
+      <div class="table-wrap desktop-only">
+        <table class="table">
+          <thead><tr><th>Date</th><th>Client</th><th>MoMo Number</th><th>Capital</th><th>Deposit</th><th>Withdrawal</th><th>Balance</th><th>Branch</th><th>Actions</th></tr></thead>
+          <tbody id="tbodyTelecel"><tr><td colspan="9" class="center muted">Loading...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="mobileTelecel" class="mobile-cards"></div>
+    </section>
+
+    <!-- Statements Tab -->
+    <section id="tab-statements" class="tab-pane">
+      <div class="pane-header">
+        <h3>📄 Unified Bank Statement</h3>
+        <div class="pane-actions">
+          <select id="filterNetworkStmt"><option value="">All Networks</option><option value="MTN">MTN</option><option value="Telecel">Telecel</option></select>
+          <div class="search-wrap">
+            <input type="text" class="search" id="searchStmt" inputmode="search" placeholder="Client or MoMo #">
+          </div>
+          <input type="date" id="filterStartStmt" class="date">
+          <input type="date" id="filterEndStmt" class="date">
+          <button class="btn ghost sm" id="exportCsvStmt">CSV</button>
+          <button class="btn ghost sm" id="exportPdfStmt">PDF</button>
+        </div>
+      </div>
+      <div class="table-wrap desktop-only">
+        <table class="table statement">
+          <thead><tr><th>Date</th><th>Network</th><th>Client</th><th>MoMo Number</th><th>Capital</th><th>Deposit</th><th>Withdrawal</th><th>Txn Balance</th><th>Running</th></tr></thead>
+          <tbody id="tbodyStmt"><tr><td colspan="9" class="center muted">Loading statements...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="mobileStmt" class="mobile-cards"></div>
+    </section>
+
+    <!-- Trial Balance Tab -->
+    <section id="tab-trial" class="tab-pane">
+      <div class="pane-header">
+        <h3>⚖️ Trial Balance — Live Dashboard</h3>
+        <div class="pane-actions">
+          <label>As of:</label>
+          <input type="date" id="trialDate" class="date">
+          <button class="btn primary sm" id="refreshTrial">Refresh</button>
+          <button class="btn ghost sm" id="manageClosedDaysBtn">🔒 Manage Closed Days</button>
+        </div>
+      </div>
+      <div id="trialCards" class="trial-grid"></div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Network</th><th>Count</th><th>Total Capital</th><th>Total Deposits</th><th>Total Withdrawals</th><th>Closing Balance</th></tr></thead>
+          <tbody id="tbodyTrial"></tbody>
+        </table>
+      </div>
+
+      <div id="closedDaysSection" style="margin-top:18px;background:white;border:1px solid var(--border);border-radius:12px;padding:14px" class="hidden">
+        <h4 style="font-size:14px;margin-bottom:8px">🔒 Closed Days — Audit Lock</h4>
+        <p class="muted small" style="margin-bottom:8px">Once a day is closed by admin, transactions dated that day become read-only for attendants. Admin can still edit/delete and reopen.</p>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Date</th><th>Network</th><th>Closed By</th><th>Closed At</th><th>Branch</th><th>Action</th></tr></thead>
+            <tbody id="tbodyClosedDays"><tr><td colspan="6" class="center muted">Loading closed days...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        <h4 style="margin-bottom:10px;font-size:14px">🔍 Audit Feed — Latest with MoMo Numbers (Offline cache available)</h4>
+        <div class="table-wrap desktop-only">
+          <table class="table">
+            <thead><tr><th>Date</th><th>Network</th><th>Client</th><th>MoMo Number</th><th>Deposit</th><th>Withdrawal</th><th>Balance</th></tr></thead>
+            <tbody id="tbodyTrialDetail"><tr><td colspan="7" class="center muted">Select date and refresh to see audit feed</td></tr></tbody>
+          </table>
+        </div>
+        <div id="mobileTrialDetail" class="mobile-cards"></div>
+      </div>
+
+      <p class="muted small center" style="margin-top:12px">Formula: Closing = Capital + Deposits - Withdrawals • All amounts in GHS • Works offline • PWA installable</p>
+
+      <div class="offline-manual" style="margin-top:16px;background:white;border:1px solid var(--border);border-radius:12px;padding:14px">
+        <h4 style="font-size:13px;margin-bottom:8px">📴 Offline Mode Guide</h4>
+        <ul style="font-size:12px;color:var(--muted);padding-left:16px;line-height:1.6">
+          <li>After first visit, app shell cached — opens even without internet</li>
+          <li>Add transactions offline: they are saved locally with MoMo numbers and auto-sync when online</li>
+          <li>Offline queue count shown at top</li>
+          <li>Statements & Trial cached for offline viewing</li>
+          <li>Install: Android Chrome → Menu ⋮ → Add to Home Screen / Install App. iPhone Safari → Share → Add to Home Screen</li>
+        </ul>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button id="viewOfflineQueueBtn" class="btn ghost sm">View Offline Queue (<span id="queueCountBtn">0</span>)</button>
+          <button id="syncNowBtn" class="btn primary sm">🔄 Sync Now</button>
+          <button id="clearCacheBtn" class="btn ghost sm">Clear Offline Cache</button>
+        </div>
+        <div id="offlineQueueList" class="hidden" style="margin-top:10px;max-height:200px;overflow:auto;border:1px solid #f0f3f9;border-radius:8px;padding:8px"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Mawutor Dezor Enterprise • Ho Dome • <span id="txCount">0</span> txs • MoMo • <span id="pwaStatus">PWA</span> • <span id="cacheStatus">Cache: checking</span><br>
+    <span style="font-weight:700;color:var(--navy)">Developed by Samquarsh | Contact: <a href="tel:0558103988" style="color:var(--navy);font-weight:800;text-decoration:none;border-bottom:1px dashed">0558103988</a></span> • Ghana Mobile Money Ledger • Offline PWA • Atlas Permanent
+  </footer>
+
+  <button id="fabAdd" class="fab">+</button>
+
+  <nav class="mobile-bottom-nav">
+    <button class="m-tab active" data-tab="mtn"><i>💛</i><span>MTN</span></button>
+    <button class="m-tab" data-tab="telecel"><i>❤️</i><span>Telecel</span></button>
+    <button class="m-tab" data-tab="statements"><i>📄</i><span>Stmt</span></button>
+    <button class="m-tab" data-tab="trial"><i>⚖️</i><span>Trial</span></button>
+  </nav>
+</div>
+
+<!-- Transaction Modal -->
+<div id="txModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modalTitle">Add Transaction</h3>
+      <button id="closeModal" class="x">✕</button>
+    </div>
+    <form id="txForm">
+      <input type="hidden" id="txId">
+      <div class="grid2">
+        <div class="field">
+          <label>Network *</label>
+          <select id="txNetwork" required>
+            <option value="MTN">MTN</option>
+            <option value="Telecel">Telecel</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Date & Time *</label>
+          <input type="datetime-local" id="txDate" required>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Client Name *</label>
+          <input type="text" id="txClient" autocomplete="name" placeholder="e.g. Esi Agbemenya" required>
+        </div>
+        <div class="field">
+          <label>MoMo Number * <small style="color:var(--green)">Required</small></label>
+          <input type="tel" id="txMomo" inputmode="tel" autocomplete="tel" placeholder="e.g. 0244 123 456" required pattern="[0-9+\s\-]{9,15}">
+          <small class="hint" style="text-align:left">Saved offline too if no internet</small>
+        </div>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label>Capital at Start (GHS)</label>
+          <input type="number" step="0.01" min="0" inputmode="decimal" id="txCapital" placeholder="0.00" value="0">
+        </div>
+        <div class="field">
+          <label>Amount Deposited (GHS)</label>
+          <input type="number" step="0.01" min="0" inputmode="decimal" id="txDeposit" placeholder="0.00" value="0">
+        </div>
+        <div class="field">
+          <label>Amount Withdrawn (GHS)</label>
+          <input type="number" step="0.01" min="0" inputmode="decimal" id="txWithdrawal" placeholder="0.00" value="0">
+        </div>
+      </div>
+      <div class="field">
+        <label>Branch</label>
+        <input type="text" id="txBranch" value="Ho Dome">
+      </div>
+      <div class="calc-box">
+        <div>
+          <span>Auto-calculated Balance:</span>
+          <small>balance = capital + deposit - withdrawal</small>
+        </div>
+        <b id="calcBalance">GHS 0.00</b>
+      </div>
+      <div id="offlineSaveNote" class="alert hidden" style="background:#fff3cd;border-color:#ffe69c;color:#856404">📴 Offline — This transaction will be queued locally with MoMo number and synced when you’re back online.</div>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" id="cancelTx">Cancel</button>
+        <button type="submit" class="btn primary" id="saveTxBtn">Save Transaction</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/app.js"></script>
+<script>
+// PWA Service Worker Registration + Install Prompt + Offline UI
+let deferredPrompt = null;
+const installBanner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+const offlineBanner = document.getElementById('offlineBanner');
+
+function updateOnlineStatus(){
+  const isOnline = navigator.onLine;
+  const offlineStatus = document.getElementById('offlineStatus');
+  const connStatus = document.getElementById('connStatus');
+  const offlineSaveNote = document.getElementById('offlineSaveNote');
+  if(isOnline){
+    if(offlineStatus) offlineStatus.textContent = '📶 Online';
+    if(connStatus) connStatus.textContent = 'Live';
+    if(offlineBanner) offlineBanner.classList.add('hidden');
+    if(offlineSaveNote) offlineSaveNote.classList.add('hidden');
+  } else {
+    if(offlineStatus) offlineStatus.textContent = '📴 Offline';
+    if(connStatus) connStatus.textContent = 'Offline';
+    if(offlineBanner) offlineBanner.classList.remove('hidden');
+    if(offlineSaveNote) offlineSaveNote.classList.remove('hidden');
+  }
+  // Update queue count
+  try{
+    const q = JSON.parse(localStorage.getItem('mde_offline_queue')||'[]');
+    const qc = document.getElementById('offlineQueueCount');
+    const qb = document.getElementById('queueCountBtn');
+    if(qc) qc.textContent = `${q.length} queued`;
+    if(qb) qb.textContent = q.length;
+  }catch{}
+}
+
+window.addEventListener('online', ()=>{ updateOnlineStatus(); if(window.syncOfflineQueue) window.syncOfflineQueue(); });
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
+
+// SW Registration
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(reg => {
+        console.log('[PWA] SW registered', reg.scope);
+        const cs = document.getElementById('cacheStatus');
+        if(cs) cs.textContent = 'Cache: Ready (Offline works)';
+        // Check for updates
+        reg.addEventListener('updatefound', ()=>{
+          const nw = reg.installing;
+          nw.addEventListener('statechange', ()=>{
+            if(nw.state==='installed' && navigator.serviceWorker.controller){
+              // New version
+              if(confirm('New version available! Reload to update?')){
+                nw.postMessage({type:'SKIP_WAITING'});
+                window.location.reload();
+              }
+            }
+          });
+        });
+      })
+      .catch(err => {
+        console.log('[PWA] SW registration failed', err);
+        const cs = document.getElementById('cacheStatus');
+        if(cs) cs.textContent = 'Cache: Failed';
+      });
+    navigator.serviceWorker.addEventListener('message', (event)=>{
+      if(event.data && event.data.type==='SYNC_OFFLINE_QUEUE'){
+        if(window.syncOfflineQueue) window.syncOfflineQueue();
+      }
+    });
+  });
+}
+
+// Install Prompt
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('[PWA] Install prompt available');
+  if(installBanner) installBanner.classList.remove('hidden');
+  const menuBtn = document.getElementById('installMenuBtn');
+  if(menuBtn) menuBtn.classList.remove('hidden');
+  const pwaStatus = document.getElementById('pwaStatus');
+  if(pwaStatus) pwaStatus.textContent = 'Installable';
+});
+
+if(installBtn){
+  installBtn.addEventListener('click', async ()=>{
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('[PWA] Install outcome', outcome);
+    deferredPrompt = null;
+    if(installBanner) installBanner.classList.add('hidden');
+  });
+}
+const dismissBtn = document.getElementById('dismissInstall');
+if(dismissBtn) dismissBtn.addEventListener('click', ()=> { if(installBanner) installBanner.classList.add('hidden'); });
+
+const installMenuBtn = document.getElementById('installMenuBtn');
+if(installMenuBtn){
+  installMenuBtn.addEventListener('click', async ()=>{
+    if(deferredPrompt){ deferredPrompt.prompt(); } 
+    else {
+      alert('To install:\nAndroid: Chrome Menu ⋮ → Add to Home Screen / Install App\n\niPhone: Safari Share button → Add to Home Screen\n\nAfter install, app works offline!');
+    }
+  });
+}
+
+// Detect if running as installed PWA
+if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone){
+  console.log('[PWA] Running as installed app');
+  const pwaStatus = document.getElementById('pwaStatus');
+  if(pwaStatus) pwaStatus.textContent = 'Installed ✓';
+  if(installBanner) installBanner.classList.add('hidden');
+}
+
+// iOS standalone fix
+document.addEventListener('touchstart', function(){}, {passive:true});
+</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mawutor Dezor Enterprise — Mobile Money Bookkeeping for Ghana</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap');
+:root{--navy:#0f1e3a;--yellow:#FFCC00;--red:#E4002B;--green:#00c27a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:#f6f8fb;color:#0f1e3a;line-height:1.6}
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#07122a 100%);color:white;padding:40px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(600px at 20% 30%,rgba(255,204,0,.25),transparent),radial-gradient(600px at 80% 70%,rgba(228,0,43,.25),transparent)}
+.hero *{position:relative}
+.logo{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--yellow),var(--red));display:grid;place-items:center;margin:0 auto 16px;font-weight:800;font-size:32px;color:var(--navy);box-shadow:0 8px 24px rgba(255,204,0,.4)}
+.hero h1{font-family:'Plus Jakarta Sans';font-size:28px;font-weight:800;margin-bottom:6px}
+.hero .sub{opacity:.8;font-size:14px;max-width:600px;margin:0 auto 16px}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.badge{padding:6px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.5px}
+.badge.y{background:var(--yellow);color:var(--navy)}
+.badge.r{background:var(--red);color:white}
+.badge.g{background:var(--green);color:white}
+.badge.w{background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.2)}
+.container{max-width:900px;margin:0 auto;padding:20px}
+.card{background:white;border:1px solid #e3e8f0;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 10px 30px rgba(15,30,58,.08)}
+.card h2{font-family:'Plus Jakarta Sans';font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.feature{display:flex;gap:10px;align-items:flex-start;padding:10px;background:#f7f9fc;border-radius:10px}
+.feature i{font-style:normal;width:32px;height:32px;border-radius:8px;background:var(--navy);color:white;display:grid;place-items:center;font-size:16px;flex-shrink:0}
+.feature b{font-size:13px;display:block}
+.feature small{font-size:11px;color:#6b7a99}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:700px){.pricing{grid-template-columns:1fr}}
+.price{border:2px solid #e3e8f0;border-radius:14px;padding:16px;text-align:center;position:relative}
+.price.popular{border-color:var(--navy);box-shadow:0 10px 30px rgba(15,30,58,.12)}
+.price .tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--navy);color:white;font-size:10px;padding:3px 10px;border-radius:999px;font-weight:700}
+.price h3{font-size:14px;margin-bottom:4px}
+.price .amt{font-size:26px;font-weight:800;color:var(--navy);margin:8px 0}
+.price .amt small{font-size:12px;font-weight:400;color:#6b7a99}
+.price ul{list-style:none;text-align:left;font-size:11px;color:#6b7a99;line-height:1.8;margin:10px 0}
+.price ul li::before{content:'✓ ';color:var(--green);font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;cursor:pointer;border:none;width:100%}
+.btn.primary{background:var(--navy);color:white}
+.btn.yellow{background:var(--yellow);color:var(--navy)}
+.btn.ghost{background:white;border:1px solid #e3e8f0;color:var(--navy)}
+.dev{background:linear-gradient(135deg,var(--navy),#1a335e);color:white;border-radius:14px;padding:20px;text-align:center}
+.dev a{color:var(--yellow);text-decoration:none;font-weight:800;border-bottom:1px dashed var(--yellow)}
+.footer{text-align:center;font-size:11px;color:#6b7a99;padding:20px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="logo">M</div>
+  <h1>Mawutor Dezor Enterprise</h1>
+  <p class="sub">The Mobile Money Bookkeeping App Built for Ghana — MTN MoMo, Telecel Cash, AirtelTigo — With MoMo Numbers, Offline PWA, Daily Closing Lock, & Atlas Cloud Safe for Years</p>
+  <div class="badges">
+    <span class="badge y">MTN Yellow</span>
+    <span class="badge r">Telecel Red</span>
+    <span class="badge g">Offline ✓</span>
+    <span class="badge w">Installable PWA</span>
+    <span class="badge w">Atlas Permanent</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h2>📱 Why Every MoMo Merchant in Ghana Needs This</h2>
+<div class="grid2">
+  <div class="feature"><i>👤</i><div><b>Client + MoMo Number Together</b><small>Search by name OR phone 0244..., tap to call customer directly, no more mixing customers</small></div></div>
+  <div class="feature"><i>📴</i><div><b>Works Offline in Market</b><small>No internet in market? Add transactions offline, queued yellow, auto-sync when back online. No data loss.</small></div></div>
+  <div class="feature"><i>🔒</i><div><b>Daily Closing Lock (Admin Only)</b><small>Admin closes day → attendants cannot edit/delete that day. Prevents fraud, keeps audit clean. Admin can reopen.</small></div></div>
+  <div class="feature"><i>💛</i><div><b>MTN & Telecel Separate Ledgers</b><small>Capital, Deposits, Withdrawals, Balance = capital+deposit-withdrawal per transaction. GHS1,000.00 formatting.</small></div></div>
+  <div class="feature"><i>📄</i><div><b>Bank-Statement Feed + Running Balance</b><small>Unified MTN+Telecel feed, filter by network/date/phone, running cumulative balance like bank statement</small></div></div>
+  <div class="feature"><i>⚖️</i><div><b>Trial Balance Any Date</b><small>Totals per network as of any date, closing balances, audit feed with MoMo numbers</small></div></div>
+  <div class="feature"><i>📊</i><div><b>CSV & PDF Export with MoMo</b><small>Export any date range, with MoMo numbers, for accountant or backup to Drive</small></div></div>
+  <div class="feature"><i>👥</i><div><b>Multi-User Live Sync</b><small>Admin + attendants login via email/phone, live updates across phones via Socket.io</small></div></div>
+  <div class="feature"><i>📲</i><div><b>Install on Android & iPhone</b><small>Add to Home Screen → icon like MTN app, splash screen, standalone, no browser bar</small></div></div>
+  <div class="feature"><i>☁️</i><div><b>Atlas Cloud Permanent for Years</b><small>File JSON wipes on Render free, Atlas MongoDB free 512MB = 5+ years, never expires</small></div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔒 New: Daily Closing Feature</h2>
+<p style="font-size:13px;color:#6b7a99;margin-bottom:10px">Built for Ghana MoMo shops to prevent night editing and fraud.</p>
+<div class="grid2">
+  <div class="feature"><i>🔒</i><div><b>Close Day (Admin Only)</b><small>MTN tab → 🔒 Close Day → Select date (YYYY-MM-DD) → Choose MTN / Telecel / All → Close. Attendants see 🔒 Closed badge and cannot add/edit/delete for that day.</small></div></div>
+  <div class="feature"><i>🔓</i><div><b>Reopen Day (Admin Only)</b><small>Trial Balance → Manage Closed Days → List of closed dates with network, closed by, time → Reopen button → Attendants can edit again. All actions broadcast live.</small></div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>💰 Pricing for Ghana — General (Not Only Ho)</h2>
+<div class="pricing">
+  <div class="price">
+    <h3>Starter</h3>
+    <div class="amt">GHS 1,200<small>/once</small></div>
+    <small>For small kiosk, 1 shop</small>
+    <ul>
+      <li>MTN + Telecel ledgers</li>
+      <li>MoMo numbers + search</li>
+      <li>Offline PWA + Install</li>
+      <li>CSV/PDF export</li>
+      <li>1 user</li>
+      <li>Setup + 30min training</li>
+    </ul>
+    <a class="btn ghost" href="tel:0558103988">Call Samquarsh</a>
+  </div>
+  <div class="price popular">
+    <div class="tag">MOST POPULAR</div>
+    <h3>Pro Merchant</h3>
+    <div class="amt">GHS 1,500<small>/once + GHS 300/yr</small></div>
+    <small>Best for Ho, Accra, Kumasi, Tamale shops</small>
+    <ul>
+      <li>Everything in Starter</li>
+      <li>Daily Closing Lock (Admin)</li>
+      <li>Multi-user live sync</li>
+      <li>Statements + Trial Balance</li>
+      <li>Atlas permanent for years</li>
+      <li>Offline queue + tel: links</li>
+      <li>2 users + 1hr training</li>
+    </ul>
+    <a class="btn primary" href="tel:0558103988">Call 0558103988</a>
+  </div>
+  <div class="price">
+    <h3>Monthly</h3>
+    <div class="amt">GHS 120<small>/mo</small></div>
+    <small>Small monthly, no big upfront</small>
+    <ul>
+      <li>All Pro features</li>
+      <li>Atlas cloud permanent</li>
+      <li>Offline PWA + mobile</li>
+      <li>MoMo numbers everywhere</li>
+      <li>Daily Closing Lock</li>
+      <li>WhatsApp support</li>
+      <li>Cancel anytime</li>
+    </ul>
+    <a class="btn yellow" href="tel:0558103988">Subscribe</a>
+  </div>
+</div>
+<p style="font-size:11px;color:#6b7a99;margin-top:10px;text-align:center">Custom: Add AirtelTigo, extra branch, source code sale GHS 5k-8k. Free Render URL included, custom domain optional.</p>
+</div>
+
+<div class="card dev">
+<h2 style="justify-content:center">Developed by Samquarsh</h2>
+<p style="font-size:14px;margin:8px 0">📞 Contact: <a href="tel:0558103988">0558103988</a> | <a href="https://wa.me/233558103988">WhatsApp: 0558103988</a></p>
+<p style="font-size:12px;opacity:.8">For Mobile Money merchants across Ghana — Accra, Kumasi, Ho, Tamale, Cape Coast, Takoradi, Sunyani, all regions. Works offline in market, syncs when online. Built with MTN Yellow #FFCC00 + Telecel Red #E4002B + Navy #0f1e3a, PWA installable, Atlas cloud safe for years.</p>
+<p style="font-size:11px;margin-top:10px;opacity:.6">Ghana Mobile Money Bookkeeping • GHS Currency • Offline PWA • Atlas Permanent • Daily Closing Lock • MoMo Numbers</p>
+<a href="tel:0558103988" class="btn yellow" style="margin-top:12px;max-width:240px">📞 Call Samquarsh Now</a>
+</div>
+
+</div>
+
+<div class="footer">
+Mawutor Dezor Enterprise • General Sales Flyer for Ghana • Not only Ho — for all Ghana MoMo merchants • Developed by Samquarsh 0558103988 • Offline PWA • Atlas Permanent • MoMo Numbers • Daily Closing Lock
+</div>
+
+</body>
+</html>

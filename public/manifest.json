@@ -1,0 +1,78 @@
+{
+  "name": "Mawutor Dezor Enterprise",
+  "short_name": "Mawutor",
+  "description": "Mobile Money Bookkeeping for Ho Dome, Volta Region, Ghana - MTN & Telecel ledger with MoMo numbers, offline ready",
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "background_color": "#0f1e3a",
+  "theme_color": "#0f1e3a",
+  "orientation": "any",
+  "scope": "/",
+  "categories": ["finance", "business", "productivity"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Add MTN Transaction",
+      "short_name": "MTN",
+      "description": "Add new MTN MoMo transaction with MoMo number",
+      "url": "/?action=add-mtn",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Add Telecel Transaction",
+      "short_name": "Telecel",
+      "description": "Add new Telecel Cash transaction",
+      "url": "/?action=add-telecel",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Statements",
+      "short_name": "Statements",
+      "description": "View unified bank statements",
+      "url": "/?tab=statements",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
